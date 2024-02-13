@@ -30,6 +30,18 @@ class HomeView extends StatelessWidget {
                   child: Text("Counter Page"),
                 ),
               ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.toNamed("/login");
+              },
+              child: Card(
+                color: Colors.amber,
+                margin: EdgeInsets.all(16),
+                child: Center(
+                  child: Text("Login Page"),
+                ),
+              ),
             )
           ],
         ),
