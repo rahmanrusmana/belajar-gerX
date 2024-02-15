@@ -29,7 +29,7 @@ class BottomMenuView extends GetView<BottomMenuController> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.assignment),
-              label: 'Counter',
+              label: 'produk',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

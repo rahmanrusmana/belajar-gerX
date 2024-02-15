@@ -1,10 +1,12 @@
+// register_controller.dart
+
 import 'dart:convert';
 
-import 'package:belajar_getx/app/providers/api.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../providers/api.dart';
 
 class RegisterController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -12,6 +14,7 @@ class RegisterController extends GetxController {
   var name = ''.obs;
   var email = ''.obs;
   var password = ''.obs;
+  var confirmPassword = ''.obs;
 
   void onNameChanged(String value) {
     name.value = value;
@@ -24,20 +27,23 @@ class RegisterController extends GetxController {
   void onPasswordChanged(String value) {
     password.value = value;
   }
+  void onconfirmPassword(String value) {
+    confirmPassword.value = value;
+  }
 
   Future<void> register() async {
     try {
-      var response = await _performRegistration();
+      var response = await _performRegister();
       var responseBody = json.decode(response.body);
 
-      if (response.statusCode == 200 && responseBody['token'] != null) {
-        _saveUserData(responseBody);
-        Get.offAllNamed(
-            '/bottom-menu'); // Navigate to the home page after registration
+      if (response.statusCode == 201 && responseBody['success'] == true) {
+        // Registration successful
+        Get.offAllNamed('/bottom-menu'); // Redirect to login page
+        Get.snackbar('Success', 'Registration successful');
       } else {
         // Registration failed, handle the error
-        Get.snackbar(
-            'Error', 'Registration failed. ${responseBody['message']}');
+        String errorMessage = responseBody['message'] ?? 'Registration failed';
+        Get.snackbar('Error', errorMessage);
       }
     } catch (e) {
       // Handle other errors
@@ -46,13 +52,14 @@ class RegisterController extends GetxController {
     }
   }
 
-  Future<http.Response> _performRegistration() async {
-    var apiUrl = '/register';
+
+  Future<http.Response> _performRegister() async {
+    var apiUrl = '/register'; // Sesuaikan dengan endpoint registrasi Anda
     var requestBody = {
-      'name': name.value,
+      'name': name.value, // Ubah dengan variabel name yang sesuai dengan implementasi Anda
       'email': email.value,
       'password': password.value,
-      'role': 'member'
+      'password_confirmation': confirmPassword.value,
     };
 
     return await http.post(
@@ -63,8 +70,7 @@ class RegisterController extends GetxController {
   }
 
   void _saveUserData(Map<String, dynamic> responseBody) async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    localStorage.setString('token', responseBody['token']);
-    localStorage.setString('user', json.encode(responseBody['data']));
+    // Implementation for saving user data to SharedPreferences
+    // This could be similar to what you did in the LoginController
   }
 }
