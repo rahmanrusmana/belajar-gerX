@@ -1,5 +1,7 @@
 import 'package:belajar_getx/app/modules/counter/views/counter_view.dart';
 import 'package:belajar_getx/app/modules/home/views/home_view.dart';
+import 'package:belajar_getx/app/modules/kategori/views/kategori_view.dart';
+import 'package:belajar_getx/app/modules/pasien/views/pasien_view.dart';
 import 'package:belajar_getx/app/modules/profil/views/profil_view.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +16,7 @@ class BottomMenuView extends GetView<BottomMenuController> {
     return Scaffold(
       body: Obx(() => IndexedStack(
             index: controller.currentIndex.value,
-            children: [HomeView(), CounterView(), ProfilView()],
+            children: [HomeView(), KategoriView(), ProfilView()],
           )),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(

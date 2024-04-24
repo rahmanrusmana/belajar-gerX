@@ -20,44 +20,32 @@ class ProfilView extends StatelessWidget {
       body: Obx(
         () => profilController.isLoading.value
             ? Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Text(
-                    //   'ID: ${profilController.user['id']}',
-                    //   style: TextStyle(fontSize: 18),
-                    // ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Nama: ${profilController.user['name']}',
-                      style: TextStyle(fontSize: 18),
+            : profilController.user.isEmpty
+                ? Center(child: Text('Tidak ada data profil'))
+                : Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'ID: ${profilController.user['id']}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Nama: ${profilController.user['name']}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Email: ${profilController.user['email']}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Email: ${profilController.user['email']}',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    // SizedBox(height: 8),
-                    // Text(
-                    //   'Role: ${profilController.user['role']}',
-                    //   style: TextStyle(fontSize: 18),
-                    // ),
-                    // SizedBox(height: 8),
-                    // Text(
-                    //   'Dibuat pada: ${profilController.user['created_at']}',
-                    //   style: TextStyle(fontSize: 18),
-                    // ),
-                    // SizedBox(height: 8),
-                    // Text(
-                    //   'Diperbarui pada: ${profilController.user['updated_at']}',
-                    //   style: TextStyle(fontSize: 18),
-                    // ),
-                  ],
-                ),
-              ),
+                  ),
       ),
     );
   }
 }
+

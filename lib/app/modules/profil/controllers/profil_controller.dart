@@ -16,19 +16,15 @@ class ProfilController extends GetxController {
 
   Future<void> fetchUserDetails() async {
     try {
-      // Get the token from SharedPreferences
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       var token = localStorage.getString('token');
 
-      // Check if token exists before making the request
       if (token == null) {
         throw Exception('Token not found');
       }
 
-      // Set the Authorization header with the token
       var headers = {'Authorization': 'Bearer $token'};
 
-      // Perform user details API request
       var apiUrl = '/users';
       var response = await http.get(
         Uri.parse(Api.baseUrl + apiUrl),
@@ -37,7 +33,13 @@ class ProfilController extends GetxController {
 
       if (response.statusCode == 200) {
         var apiResponse = json.decode(response.body);
-        user.value = apiResponse;
+        // Pastikan token yang digunakan adalah token pengguna yang login
+        if (apiResponse['data']['token'] == token) {
+          user.value = apiResponse['data']['data'][0];
+        } else {
+          throw Exception(
+              'Token mismatch'); // Token tidak sesuai dengan pengguna yang login
+        }
       } else {
         throw Exception('Failed to load user details');
       }
@@ -48,14 +50,12 @@ class ProfilController extends GetxController {
     }
   }
 
+
   Future<void> logout() async {
     try {
-      // Clear token or user data from local storage
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.remove('token');
       localStorage.remove('user');
-
-      // Navigate to login page
       Get.offAllNamed('/login');
     } catch (e) {
       print('Error during logout: $e');

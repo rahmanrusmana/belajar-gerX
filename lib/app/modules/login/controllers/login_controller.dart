@@ -30,6 +30,7 @@ class LoginController extends GetxController {
       if (response.statusCode == 200 && responseBody['token'] != null) {
         // Login successful
         _saveUserData(responseBody);
+        print('Token: ${responseBody['token']}'); // Cetak token di sini
         Get.offAllNamed('/bottom-menu'); // Navigate to the home page
       } else {
         // Login failed, handle the error
@@ -41,6 +42,7 @@ class LoginController extends GetxController {
       Get.snackbar('Error', 'An error occurred during login.');
     }
   }
+
 
   Future<http.Response> _performLogin() async {
     var apiUrl = '/login';
